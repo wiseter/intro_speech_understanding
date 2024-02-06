@@ -1,29 +1,23 @@
-import bs4, gtts
+import bs4
+from bs4 import BeautifulSoup
+from gtts import gTTS
 
 def extract_stories_from_NPR_text(text):
-    '''
-    Extract a list of stories from the text of the npr.com webpage.
-    
-    @params: 
-    text (string): the text of a webpage
-    
-    @returns:
-    stories (list of tuples of strings): a list of the news stories in the web page.
-      Each story should be a tuple of (title, teaser), where the title and teaser are
-      both strings.  If the story has no teaser, its teaser should be an empty string.
-    '''
-    raise RuntimeError('You need to write this part!')
+    soup = BeautifulSoup(text, 'html.parser')
+    # 假设新闻故事在 div 标签类 'story-text' 下
+    stories_elements = soup.find_all('div', class_='story-text')  
+    stories = []
+    for elem in stories_elements:
+        # 可能需要根据实际 HTML 结构调整这里的选择器
+        title = elem.find('h3').get_text(strip=True) if elem.find('h3') else ''
+        teaser = elem.find('p', class_='teaser').get_text(strip=True) if elem.find('p', class_='teaser') else ''
+        stories.append((title, teaser))
     return stories
-    
-def read_nth_story(stories, n, filename):
-    '''
-    Read the n'th story from a list of stories.
-    
-    @params:
-    stories (list of tuples of strings): a list of the news stories from a web page
-    n (int): the index of the story you want me to read
-    filename (str): filename in which to store the synthesized audio
 
-    Output: None
-    '''
-    raise RuntimeError('You need to write this part!')
+def read_nth_story(stories, n, filename):
+    if n < 0 or n >= len(stories):
+        raise ValueError("Story index out of range")
+    story = stories[n]
+    text_to_read = story[0] + ". " + story[1]
+    tts = gTTS(text=text_to_read, lang='en')
+    tts.save(filename)

@@ -38,7 +38,7 @@ class Test(unittest.TestCase):
 
     def test_extract_stories_from_NPR_text_exists(self):
         self.import_homework13()
-        with open('npr_webpage.html') as f:
+        with open('npr_webpage.html', encoding='utf-8') as f:
             webpage_text = f.read()
         self.extract_stories_from_NPR_text(webpage_text)
         self.assertTrue("homework13.py contains a method called 'extract_stories_from_NPR_text'")
@@ -52,7 +52,7 @@ class Test(unittest.TestCase):
        
     def test_extract_stories_from_NPR_text_returns_list_of_strings(self):
         self.import_homework13()
-        with open('npr_webpage.html') as f:
+        with open('npr_webpage.html', encoding='utf-8') as f:
             webpage_text = f.read()
         stories = self.extract_stories_from_NPR_text(webpage_text)
         self.assertIsInstance(stories, list, 'extract_stories_from_NPR_text should return a list')
@@ -62,7 +62,7 @@ class Test(unittest.TestCase):
        
     def test_extract_stories_from_NPR_text_returns_correct_list(self):
         self.import_homework13()
-        with open('npr_webpage.html') as f:
+        with open('npr_webpage.html', encoding='utf-8') as f:
             webpage_text = f.read()
         with open('stories.json') as f:
             ref = json.load(f)
